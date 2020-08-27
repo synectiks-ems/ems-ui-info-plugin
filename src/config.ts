@@ -1,4 +1,4 @@
-const IP = 'localhost';
+const IP = '100.81.5.26';
 
 const graphqlUrl = 'http://' + IP + ':9093';
 const loggedInUserUrl = 'http://' + IP + ':3000';
