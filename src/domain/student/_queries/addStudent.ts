@@ -109,6 +109,11 @@ export const ADD_STUDENT = gql`
         batchId
         sectionId
         branchId
+        facilityId
+        facility {
+          id
+          name
+        }
       }
     }
   }

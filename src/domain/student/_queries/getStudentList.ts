@@ -84,6 +84,10 @@ export const GET_STUDENT_LIST = gql`
         linkDesc
         facilityId
       }
+      facility {
+        id
+        name
+      }
       paymentHistory {
         id
         invoiceNumber

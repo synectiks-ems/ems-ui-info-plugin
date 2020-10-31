@@ -173,8 +173,8 @@ class StudentDetailsPage<T = { [data: string]: any }> extends React.Component<St
           console.log("Facility :::::::::::::", fd);
           retVal.push(
             <tr>
-              <td>{fd.facility.name}</td>
-              <td>{fd.facility.amount}</td>
+              <td>{fd.facilityId}</td>
+              {/* <td>{fd.facility.amount}</td> */}
             </tr>
           )
         }

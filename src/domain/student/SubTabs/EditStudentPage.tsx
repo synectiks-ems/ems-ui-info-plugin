@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import {ADD_STUDENT, GET_STUDENT_FILTER_DATA} from '../_queries';
 import {MessageBox} from '../Message/MessageBox';
 import {commonFunctions} from '../_utilites/common.functions';
+import FacilityList from './FacilityList';
 
 type StudentTableStates = {
   studentData: any;
@@ -22,6 +23,7 @@ type StudentTableStates = {
   user: any;
   stObj: any;
   StdObj: any;
+  facilityList:any;
 };
 
 export interface StudentProps extends React.HTMLAttributes<HTMLElement> {
@@ -29,6 +31,7 @@ export interface StudentProps extends React.HTMLAttributes<HTMLElement> {
   branchList?: any;
   departmentList?: any;
   createStudentFilterDataCache?: any;
+  facilityList?: any;
   user?: any;
   batches?: any;
   sections?: any;
@@ -52,6 +55,8 @@ class AddStudentPage extends React.Component<StudentProps, any> {
       branchList: this.props.branchList,
       departmentList: this.props.departmentList,
       createStudentFilterDataCache: this.props.createStudentFilterDataCache,
+      facilityList: this.props.facilityList,
+      selectedFacility:'',
       user: this.props.user,
       stObj: this.props.data,
       StdObj: this.props.StdObj,
@@ -102,6 +107,10 @@ class AddStudentPage extends React.Component<StudentProps, any> {
         comments: '',
         departmentId: '',
         branchId: '',
+        facilityId: '',
+        facility:{
+          id: ''
+        }
       },
       studentData: {
         batch: {
@@ -116,6 +125,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
         gender: {
           id: '',
         },
+        selectedIds:'',
       },
       branches: [],
       departments: [],
@@ -123,6 +133,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
       // sections: [],
       studentTypes: [],
       genders: [],
+
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
@@ -135,6 +146,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
     this.save = this.save.bind(this);
     this.doSave = this.doSave.bind(this);
     this.getInput = this.getInput.bind(this);
+    this.setSelectedFacility = this.setSelectedFacility.bind(this);
     this.getcreateStudentFilterDataCache = this.getcreateStudentFilterDataCache.bind(
       this
     );
@@ -188,6 +200,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
     };
   }
 
+
   componentWillReceiveProps() {
     this.setState({
       stObj: this.props.data,
@@ -199,6 +212,13 @@ class AddStudentPage extends React.Component<StudentProps, any> {
     this.editInputValue();
   }
 
+  setSelectedFacility(selectedFacilities: any) {
+    console.log("SELECTED Facility :::: ",selectedFacilities[0]);
+    this.setState({
+      selectedFacility: selectedFacilities[0].id,
+    });
+  }
+  
   async getcreateStudentFilterDataCache() {
     const {branchId, academicYearId, departmentId} = this.state;
     console.log('student branch Id:', branchId);
@@ -307,6 +327,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
   }
 
   async doSave(inputObj: any, id: any) {
+    const {studentData, branchId, academicYearId, departmentId} = this.state;
     let btn = document.querySelector('#' + id);
     btn && btn.setAttribute('disabled', 'true');
     let exitCode = 0;
@@ -323,6 +344,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
           'Success in saveStaff Mutation. Exit code : '
           // resp.data.addStudent.cmsStudentVo.exitCode
         );
+        console.log('total IDS : ', studentData.selectedIds);
         // exitCode = resp.data.addStudent.cmsStudentVo.exitCode;
 
         // this.setState({
@@ -506,7 +528,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
     if (errorMessage !== '') {
       return false;
     }
-    // this.toggleTab(2);
+    this.toggleTab(3);
     return true;
   }
 
@@ -515,6 +537,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
       branchId,
       departmentId,
       academicYearId,
+      facilityId,
       studentData,
       stObj,
       studentObj,
@@ -562,13 +585,14 @@ class AddStudentPage extends React.Component<StudentProps, any> {
         batchId: studentData.batch.id,
         sectionId: studentData.section.id,
         academicYearId: academicYearId,
+        // facilityId:     this.state.facilityId , 
       },
     });
     return;
   }
 
   getInput(studentObj: any) {
-    const {branchId, departmentId, academicYearId, studentData, stObj} = this.state;
+    const {branchId, departmentId, academicYearId, studentData,facilityId, stObj} = this.state;
     let inputObj = {
       id:
         studentObj.id !== null || studentObj.id !== undefined || studentObj.id !== ''
@@ -615,6 +639,8 @@ class AddStudentPage extends React.Component<StudentProps, any> {
       batchId: studentData.batch.id,
       sectionId: studentData.section.id,
       academicYearId: academicYearId,
+      
+      facilityId: this.state.selectedFacility , 
       // strDateOfBirth:
       //   studentObj.dateOfBirth !== null ||
       //   studentObj.dateOfBirth !== undefined ||
@@ -639,6 +665,8 @@ class AddStudentPage extends React.Component<StudentProps, any> {
       successMessage,
       studentObj,
       studentData,
+      facilityList,
+      facilityId,
       createStudentFilterDataCache,
       departmentId,
     } = this.state;
@@ -834,6 +862,16 @@ class AddStudentPage extends React.Component<StudentProps, any> {
                   }}
                 >
                   Primary & Emergency Contact
+                </NavLink>
+              </NavItem>
+              <NavItem className="cursor-pointer">
+                <NavLink
+                  className={`${activeTab === 3 ? 'active' : ''}`}
+                  onClick={() => {
+                    this.toggleTab(3);
+                  }}
+                >
+                  Facility
                 </NavLink>
               </NavItem>
             </Nav>
@@ -1274,6 +1312,21 @@ class AddStudentPage extends React.Component<StudentProps, any> {
                     <div>
                       <button
                         type="button"
+                        onClick={this.validateEmergencyDetails}
+                        className="btn btn-primary border-bottom"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </TabPane>
+              <TabPane tabId={3}>
+                <div>
+                <FacilityList facilityList={facilityList} onSelectFacility={this.setSelectedFacility}   ></FacilityList>
+                   <div>
+                      <button
+                        type="button"
                         name="btnSaveStudent"
                         id="btnSaveStudent"
                         onClick={this.save}
@@ -1284,7 +1337,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
                       </button>
                     </div>
                   </div>
-                </div>
+                
               </TabPane>
             </TabContent>
           </div>
