@@ -10,6 +10,7 @@ import {GET_STUDENT_LIST, GET_STUDENT_FILTER_DATA} from '../_queries';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import {FaBluetooth} from 'react-icons/fa';
 import EditStudentPage from './EditStudentPage';
+import { Table } from '../../../css/table';
 
 const w140 = {
   width: '140px',
@@ -34,6 +35,8 @@ type StudentTableStates = {
   user: any;
   activeTab: any;
   StdObj: any;
+  columns: any;
+  studentListObj: any;
 };
 
 export interface StudentListProps extends React.HTMLAttributes<HTMLElement> {
@@ -53,6 +56,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
       activeTab: 0,
       StdObj: {},
       user: this.props.user,
+      studentListObj: [],
       createStudentFilterDataCache: this.props.createStudentFilterDataCache,
       branchId: null,
       academicYearId: null,
@@ -70,6 +74,81 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
         mutateResult: [],
         search: '',
       },
+      columns: [
+        {
+          label: 'Student Name',
+          key: 'studentName',
+          renderCallback: (value: any, obj: any) => {
+            return <td>
+               <a
+                    onClick={(e: any) => this.showDetail(obj, e)}
+                    style={{color: '#307dc2'}}
+                  >  
+                   {obj.studentName}
+                  </a>   
+                       
+                   </td>
+          },
+        },
+       
+        {
+          label: "Roll No",
+          key: 'rollNo',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: " Student Id",
+          key: 'id',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Department",
+          key: 'name',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Year",
+          key: 'batch',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Section",
+          key: 'section',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Gender",
+          key: 'sex',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Type",
+          key: 'studentType',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: "Primary Contact",
+          key: 'studentPrimaryCellNumber',
+          // isCaseInsensitive: false,
+        },
+        {
+          label: 'Action',
+          key: 'action',
+          renderCallback: (value: any, obj: any) => {
+            return <td>
+              <button
+                    className="btn btn-primary"
+                    onClick={(e: any) => this.getStDetail(obj, e)}
+                  >
+                    {' '}
+                    Edit{' '}
+                  </button>
+            </td>
+          },
+          isCaseInsensitive: true
+        },
+        
+      ],
       branches: [],
       departments: [],
       batches: [],
@@ -94,7 +173,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
 
     this.checkAllStudents = this.checkAllStudents.bind(this);
     this.onClickCheckbox = this.onClickCheckbox.bind(this);
-    this.createStudentRows = this.createStudentRows.bind(this);
+    // this.createStudentRows = this.createStudentRows.bind(this);
     this.createNoRecordMessage = this.createNoRecordMessage.bind(this);
     this.exportStudents = this.exportStudents.bind(this);
     this.convertArrayOfObjectsToCSV = this.convertArrayOfObjectsToCSV.bind(this);
@@ -113,6 +192,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
 
   async componentDidMount() {
     await this.registerSocket();
+    
     console.log(
       '5. check create catch batches:',
       this.state.createStudentFilterDataCache.batches
@@ -243,141 +323,110 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
     return retVal;
   }
 
-  createStudentRows(objAry: any) {
-    let {search} = this.state.studentData;
-    search = search.trim();
-    const mutateResLength = objAry.length;
-    const retVal = [];
-    for (let x = 0; x < mutateResLength; x++) {
-      const tempObj = objAry[x];
-      const students = tempObj.data.getStudentList;
-      const length = students.length;
-      for (let i = 0; i < length; i++) {
-        const student = students[i];
-        if (search) {
-          if (student.studentName.indexOf(search) !== -1) {
-            retVal.push(
-              <tr key={student.id}>
-                <td>
-                  <input
-                    onClick={(e: any) => this.onClickCheckbox(i, e)}
-                    checked={student.isChecked}
-                    type="checkbox"
-                    name="chk"
-                    id={'chk' + student.id}
-                  />
-                </td>
-                <td>
-                  {/* <Link
-                    className="table-link link-color"
-                    to={`/plugins/ems-student/page/student?id=${student.id}`}
-                  >
-                    {student.studentName}
-                  </Link> */}
-                  {/* <a onClick={(e: any) => this.showDetail(student, e)}> */}
-                  {/* <a
-                    onClick={() => {
-                      // this.toggleTab(1);
-                      (e: any) => this.showDetail(student, e);
-                    }}
-                  >
-                    {student.studentName}
-                  </a> */}
-                  <a
-                    onClick={(e: any) => this.showDetail(student, e)}
-                    style={{color: '#307dc2'}}
-                  >
-                    {student.studentName}
-                  </a>
-                </td>
-                <td>{student.rollNo}</td>
-                <td>{student.id}</td>
-                <td>
-                  {student.department.name}
-                  {/* {student.department.name} */}
-                </td>
-                <td>{student.batch.batch}</td>
-                <td>{student.section.section}</td>
-                <td>{student.sex}</td>
-                <td>{student.studentType}</td>
-                <td>{student.studentPrimaryCellNumber}</td>
-                <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={(e: any) => this.getStDetail(student, e)}
-                  >
-                    {' '}
-                    Edit{' '}
-                  </button>
-                </td>
-              </tr>
-            );
-            console.log('print student obj:', student);
-          }
-        } else {
-          retVal.push(
-            <tr key={student.id}>
-              <td>
-                <input
-                  onClick={(e: any) => this.onClickCheckbox(i, e)}
-                  checked={student.isChecked}
-                  type="checkbox"
-                  name="chk"
-                  id={'chk' + student.id}
-                />
-              </td>
-              <td>
-                {/* <Link
-                  className="table-link link-color"
-                  to={`/plugins/ems-student/page/student?id=${student.id}`}
-                >
-                  {student.studentName}
-                </Link> */}
-                {/* <a onClick={(e: any) => this.showDetail(student, e)}> */}
-                {/* <a
-                  onClick={() => {
-                    // this.toggleTab(1);
-                    (e: any) => this.showDetail(student, e);
-                  }}
-                >
-                  {student.studentName}
-                </a> */}
-                <a
-                  onClick={(e: any) => this.showDetail(student, e)}
-                  style={{color: '#307dc2'}}
-                >
-                  {student.studentName}
-                </a>
-              </td>
-              <td>{student.rollNo}</td>
-              <td>{student.id}</td>
-              <td>
-                {student.department.name}
-                {/* {student.department.name} */}
-              </td>
-              <td>{student.batch.batch}</td>
-              <td>{student.section.section}</td>
-              <td>{student.sex}</td>
-              <td>{student.studentType}</td>
-              <td>{student.studentPrimaryCellNumber}</td>
-              <td>
-                <button
-                  className="btn btn-primary"
-                  onClick={(e: any) => this.getStDetail(student, e)}
-                >
-                  {' '}
-                  Edit{' '}
-                </button>
-              </td>
-            </tr>
-          );
-          console.log('print student obj:', student);
-        }
-      }
-    }
+  // createStudentRows(objAry: any) {
+  //   let {search} = this.state.studentData;
+  //   search = search.trim();
+  //   const mutateResLength = objAry.length;
+  //   const retVal = [];
+  //   for (let x = 0; x < mutateResLength; x++) {
+  //     const tempObj = objAry[x];
+  //     const students = tempObj.data.getStudentList;
+  //     const length = students.length;
+  //     for (let i = 0; i < length; i++) {
+  //       const student = students[i];
+  //       if (search) {
+  //         if (student.studentName.indexOf(search) !== -1) {
+  //           retVal.push(
+  //             <tr key={student.id}>
+  //               <td>
+  //                 <input
+  //                   onClick={(e: any) => this.onClickCheckbox(i, e)}
+  //                   checked={student.isChecked}
+  //                   type="checkbox"
+  //                   name="chk"
+  //                   id={'chk' + student.id}
+  //                 />
+  //               </td>
+  //               <td>
+                
+  //                 <a
+  //                   onClick={(e: any) => this.showDetail(student, e)}
+  //                   style={{color: '#307dc2'}}
+  //                 >
+  //                   {student.studentName}
+  //                 </a>
+  //               </td>
+  //               <td>{student.rollNo}</td>
+  //               <td>{student.id}</td>
+  //               <td>
+  //                 {student.department.name}
+  //               </td>
+  //               <td>{student.batch.batch}</td>
+  //               <td>{student.section.section}</td>
+  //               <td>{student.sex}</td>
+  //               <td>{student.studentType}</td>
+  //               <td>{student.studentPrimaryCellNumber}</td>
+  //               <td>
+  //                 <button
+  //                   className="btn btn-primary"
+  //                   onClick={(e: any) => this.getStDetail(student, e)}
+  //                 >
+  //                   {' '}
+  //                   Edit{' '}
+  //                 </button>
+  //               </td>
+  //             </tr>
+  //           );
+  //           console.log('print student obj:', student);
+  //         }
+  //       } else {
+  //         retVal.push(
+  //           <tr key={student.id}>
+  //             <td>
+  //               <input
+  //                 onClick={(e: any) => this.onClickCheckbox(i, e)}
+  //                 checked={student.isChecked}
+  //                 type="checkbox"
+  //                 name="chk"
+  //                 id={'chk' + student.id}
+  //               />
+  //             </td>
+  //             <td>
+  //               <a
+  //                 onClick={(e: any) => this.showDetail(student, e)}
+  //                 style={{color: '#307dc2'}}
+  //               >
+  //                 {student.studentName}
+  //               </a>
+  //             </td>
+  //             <td>{student.rollNo}</td>
+  //             <td>{student.id}</td>
+  //             <td>
+  //               {student.department.name}
+  //             </td>
+  //             <td>{student.batch.batch}</td>
+  //             <td>{student.section.section}</td>
+  //             <td>{student.sex}</td>
+  //             <td>{student.studentType}</td>
+  //             <td>{student.studentPrimaryCellNumber}</td>
+  //             <td>
+  //               <button
+  //                 className="btn btn-primary"
+  //                 onClick={(e: any) => this.getStDetail(student, e)}
+  //               >
+  //                 {' '}
+  //                 Edit{' '}
+  //               </button>
+  //             </td>
+  //           </tr>
+  //         );
+  //         console.log('print student obj:', student);
+  //       }
+  //     }
+  //   }
 
-    return retVal;
-  }
+  //   return retVal;
+  // }
 
   exportStudents(objAry: any) {
     const studentsToExport = [];
@@ -604,6 +653,8 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
     console.log('2. data in obj:', obj);
   }
 
+  
+
   onClick = (e: any) => {
     const {name, value} = e.nativeEvent.target;
     const {mutate} = this.props;
@@ -632,10 +683,76 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
       .then((data: any) => {
         const sdt = data;
         studentData.mutateResult = [];
-        studentData.mutateResult.push(sdt);
+        // studentData.mutateResult.push(sdt);
+        const temp = data.data.getStudentList;
+        console.log("final Data : ", temp)
+        let i;
+        // let ary = [];
+        let obj;
+        for (i in temp) {
+          
+          // obj = new StudentObj(temp[i].studentName, temp[i].rollNo, temp[i].id, temp[i].department, temp[i].batch, temp[i].section, temp[i].sex, temp[i].studentType, temp[i].studentPrimaryCellNumber);
+          obj = {
+            studentName: temp[i].studentName,
+            rollNo: temp[i].rollNo,
+            batch: temp[i].batch.batch,
+            id: temp[i].id,
+            name: temp[i].department.name, 
+            section: temp[i].section.section,
+            sex: temp[i].sex,
+            department: temp[i].department,
+            admissionNo: temp[i].admissionNo,
+            studentType: temp[i].studentType,
+            studentPrimaryCellNumber: temp[i].studentPrimaryCellNumber,
+            studentAadharNo: temp[i].studentAadharNo,
+            studentMiddleName: temp[i].studentMiddleName,
+             studentLastName: temp[i].studentLastName,
+             fatherName: temp[i].fatherName,
+             fatherMiddleName: temp[i].fatherMiddleName,
+             fatherLastName: temp[i].fatherLastName,
+             motherName: temp[i].motherName,
+            motherMiddleName: temp[i].motherMiddleName,
+             motherLastName: temp[i].motherLastName,
+            // studentAadharNo
+             studentPanNo: temp[i].studentPanNo,
+             strDateOfBirth: temp[i].strDateOfBirth,
+             studentLocalAddress : temp[i].studentLocalAddress,
+             studentPermanentAddress : temp[i].studentPermanentAddress,
+             city : temp[i].city,
+             state : temp[i].state,
+             country : temp[i].country,
+             pinCode : temp[i].pinCode,
+             studentAlternateCellNumber : temp[i].studentAlternateCellNumber,
+             studentLandLinePhoneNumber : temp[i].studentLandLinePhoneNumber,
+             studentPrimaryEmailId : temp[i].studentPrimaryEmailId,
+             studentAlternateEmailId : temp[i].studentAlternateEmailId,
+             emergencyContactEmailId : temp[i].emergencyContactEmailId,
+             relationWithStudent : temp[i].relationWithStudent,
+             emergencyContactName : temp[i].emergencyContactName,
+             emergencyContactMiddleName : temp[i].emergencyContactMiddleName,
+             emergencyContactLastName : temp[i].emergencyContactLastName,
+             emergencyContactCellNumber : temp[i].emergencyContactCellNumber,
+             emergencyContactLandLinePhoneNumber : temp[i].emergencyContactLandLinePhoneNumber,
+             studentImagePath : temp[i].studentImagePath,
+             enrollmentNo : temp[i].enrollmentNo,
+             fatherCellNumber : temp[i].fatherCellNumber,
+             fatherEmailId : temp[i].fatherEmailId,
+             religion : temp[i]. religion,
+           cast: temp[i].cast,  
+           
+
+
+
+
+          };
+          studentData.mutateResult.push(obj);
+        }
+        console.log("Final Data ", studentData.mutateResult)
         this.setState({
           studentData: studentData,
+          
         });
+    
         console.log('Student filter mutation result ::::: ', studentData.mutateResult);
       })
       .catch((error: any) => {
@@ -741,7 +858,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                       required
                       name="gender"
                       id="gender"
-                      // onChange={this.onChange}
+                      onChange={this.onChange}
                       // value={studentData.gender}
                       className="gf-form-input max-width-15"
                     >
@@ -772,7 +889,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                       required
                       name="studentTypeObj"
                       id="studentTypeObj"
-                      // onChange={this.onChange}
+                      onChange={this.onChange}
                       // value={studentData.studentType}
                       className="gf-form-input max-width-22"
                     >
@@ -799,7 +916,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                     : null}
                 </select> */}
                   </div>
-                  <div id="srch" className="margin-bott">
+                  {/* <div id="srch" className="margin-bott">
                     <label htmlFor="">Search</label>
                     <input
                       type="text"
@@ -808,7 +925,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                       value={studentData.search}
                       onChange={this.onChange}
                     />
-                  </div>
+                  </div> */}
                   <div className="bg-heading-bg studentSearch">
                     {/* <h4 className="ptl-06"></h4> */}
                     <button
@@ -823,7 +940,7 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                   </div>
                 </div>
 
-                <table id="studentlistpage" className="striped-table fwidth bg-white">
+                {/* <table id="studentlistpage" className="striped-table fwidth bg-white">
                   <thead>
                     <tr>
                       <th>
@@ -850,9 +967,9 @@ class StudentsTable extends React.Component<StudentListProps, StudentTableStates
                   <tbody>
                     {this.createStudentRows(this.state.studentData.mutateResult)}
                   </tbody>
-                </table>
-                {/* <Pagination /> */}
-                {this.createNoRecordMessage(this.state.studentData.mutateResult)}
+                </table> */}
+                <Table valueFromData={{ columns: this.state.columns, data: this.state.studentData.mutateResult }} perPageLimit={6} visiblecheckboxStatus={true} tableClasses={{ table: "alert-data-tabel", tableParent: "alerts-data-tabel", parentClass: "all-alert-data-table" }} searchKey="name" showingLine="Showing %start% to %end% of %total%" />
+                {/* {this.createNoRecordMessage(this.state.studentData.mutateResult)} */}
               </div>
             </div>
           </TabPane>

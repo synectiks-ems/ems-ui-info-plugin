@@ -549,7 +549,8 @@ class StudentDetailsPage<T = { [data: string]: any }> extends React.Component<St
                     </div>
                     <div className="col-xs-12 col-sm-4 m-b-2">
                       <span className="profile-label">Class:</span>
-                      {stObj.batch !== undefined && <span>{stObj.batch.batch}</span>}
+                      {/* {stObj.batch !== undefined && <span>{stObj.batch.batch}</span>} */}
+                    <span>{stObj.batch}</span>
                     </div>
                   </div>
                   <div className="row" style={{ marginTop: '10px' }}>
@@ -559,15 +560,17 @@ class StudentDetailsPage<T = { [data: string]: any }> extends React.Component<St
                     </div>
                     <div className="col-xs-12 col-sm-4 m-b-2">
                       <span className="profile-label">Department:</span>
-                      {stObj.department !== undefined && (
+                      {/* {stObj.department !== undefined && (
                         <span>{stObj.department.name}</span>
-                      )}
+                      )} */}
+                      <span>{stObj.name}</span>
                     </div>
                     <div className="col-xs-12 col-sm-4 m-b-2">
                       <span className="profile-label">Section:</span>
-                      {stObj.section !== undefined && (
+                      {/* {stObj.section !== undefined && (
                         <span>{stObj.section.section}</span>
-                      )}
+                      )} */}
+                      <span>{stObj.section}</span>
                     </div>
                   </div>
                 </div>
@@ -671,7 +674,7 @@ class StudentDetailsPage<T = { [data: string]: any }> extends React.Component<St
                               <span>{stObj.fatherCellNumber}</span>
                             </div>
                             <div className="col-sm-4 col-xs-12 m-b-1">
-                              <span className="profile-label">Email Address</span>
+                              <span className="profile-label">Student Email Address:</span>
                               <span>{stObj.fatherEmailId}</span>
                             </div>
                           </div>
@@ -697,7 +700,7 @@ class StudentDetailsPage<T = { [data: string]: any }> extends React.Component<St
                               <span>{stObj.studentLocalAddress}</span>
                             </div>
                             <div className="col-sm-4 col-xs-12 m-b-1">
-                              <span className="profile-label">Parmenent Address:</span>
+                              <span className="profile-label">Permanent Address:</span>
                               <span>{stObj.studentPermanentAddress}</span>
                             </div>
                             <div className="col-sm-4 col-xs-12 m-b-1">

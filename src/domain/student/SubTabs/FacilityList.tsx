@@ -138,7 +138,7 @@ class FacilityList extends React.Component<FacilityProps, FacilityTableStates> {
                           name=""
                           id="chkCheckedAll"
                         /> */}
-                      </th>
+                       </th>
                            <th>Facility Name</th>
                            <th>Facility Amount</th>
                         </tr>

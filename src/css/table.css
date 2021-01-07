@@ -1,0 +1,375 @@
+.custom-table table {
+  white-space: nowrap;
+  width: 100%;
+}
+
+.custom-table .sort-icon {
+  display: inline-block;
+  padding-left: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.custom-table .checkbox {
+  margin-top: -4px;
+  margin-right: 0px;
+  vertical-align: middle;
+}
+
+.custom-table .sort-icon.sort-none:before {
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 4px 8px 4px;
+  border-color: transparent transparent #dddddd transparent;
+  margin-bottom: 2px;
+}
+
+.custom-table .sort-icon.sort-none:after {
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 4px 0 4px;
+  border-color: #dddddd transparent transparent transparent;
+  margin-top: 2px;
+}
+
+.custom-table .sort-icon.sort-descending:after {
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 4px 0 4px;
+  border-color: #dddddd transparent transparent transparent;
+  margin-top: 0;
+}
+
+.custom-table .sort-icon.sort-ascending:before {
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 4px 8px 4px;
+  border-color: transparent transparent #dddddd transparent;
+  margin-bottom: 0px;
+}
+
+.custom-table .multiselect {
+  border-left: 1px solid #a9b9c6;
+  padding-left: 15px;
+  margin-left: 15px;
+  position: relative;
+  z-index: 10;
+}
+
+.custom-table .multiselect .form-control.select-label {
+  width: 170px;
+  cursor: pointer;
+}
+
+.custom-table .multiselect .form-control.select-label i {
+  font-size: 10px;
+  margin-top: 5px;
+  margin-right: -5px;
+}
+
+.custom-table .multiselect .options {
+  position: absolute;
+  left: 15px;
+  top: 33px;
+  background-color: #ffffff;
+  padding: 15px 15px 10px 15px;
+  width: 250px;
+  box-shadow: 0px 0px 6px -4px #3b4859;
+  border-radius: 3px;
+}
+
+.custom-table .multiselect .options .option {
+  display: block;
+  padding-bottom: 5px;
+  color: #3b4859;
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.custom-table .multiselect .options .option input {
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.custom-table .showing {
+  font-size: 13px;
+  line-height: 40px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.theme-light .custom-table .showing {
+  color: #3b4859;
+}
+
+.custom-table .showby {
+  border-left: 1px solid #a9b9c6;
+  padding-left: 15px;
+  margin-left: 15px;
+}
+
+.custom-table .showby label {
+  font-size: 13px;
+  line-height: 40px;
+  color: #ffffff;
+  font-weight: 500;
+  padding-right: 15px;
+}
+
+.custom-table .showby label {
+  color: #3b4859;
+}
+
+.custom-table .showby .form-control {
+  display: inline-block;
+  width: 75px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.custom-table .showby span {
+  font-size: 13px;
+  line-height: 40px;
+  color: #ffffff;
+  font-weight: 500;
+  padding-left: 15px;
+}
+
+.theme-light .custom-table .showby span {
+  color: #3b4859;
+}
+
+.custom-table .filter-search-control {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.custom-table .filter-search-control .input-group-text {
+  max-width: 100%;
+  text-align: left;
+  padding-right: 30px;
+  padding-left: 15px;
+  width: 100%;
+  border: 1px solid #ced4da;
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding-top: 0.399rem;
+}
+
+.custom-table .filter-search-control .input-group-text:focus {
+  outline: none;
+}
+
+.custom-table .filter-search-control button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  width: 34px;
+  height: 34px;
+}
+
+.custom-table .filter-search-control button:hover {
+  color: #333333;
+}
+
+.custom-table .pagination ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.custom-table .pagination ul div {
+  display: flex;
+}
+
+.custom-table .pagination ul div {
+  display: flex;
+  max-width: 400px;
+  overflow-x: auto;
+}
+
+.custom-table .pagination ul li a {
+  display: block;
+  padding: 5px 10px;
+  font-size: 11px;
+  color: #868f9b;
+  line-height: 16px;
+  border: 1px solid #cbcfd4;
+  border-right: none;
+}
+
+.custom-table .pagination ul li a:hover {
+  background-color: #cbcfd4;
+}
+
+.custom-table .pagination ul li a.active {
+  background-color: #cbcfd4;
+  color: black;
+}
+
+.custom-table .pagination ul li a.deactive {
+  background-color: white;
+  color: black;
+}
+
+.custom-table .pagination ul li a.desable {
+  background-color: rgb(94, 87, 87);
+  color: white;
+}
+
+.custom-table .pagination ul li a.enable {
+  background-color: #3b4859;
+  color: #ffffff;
+}
+
+.custom-table .pagination ul li.previous a {
+  padding-left: 20px;
+  padding-right: 20px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.custom-table .pagination ul li.next a {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-right: 1px solid #cbcfd4;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 768px) {
+  .custom-table .showing {
+    float: left;
+    width: 40%;
+    font-size: 11px;
+  }
+
+  .custom-table .showby {
+    border-left: none;
+    padding-left: 0px;
+    margin-left: 0px;
+    width: 60%;
+    float: right;
+    text-align: right;
+    font-size: 11px;
+  }
+
+  .custom-table .showby label {
+    font-size: 11px;
+  }
+
+  .custom-table .showby span {
+    font-size: 11px;
+  }
+
+  .custom-table .showby .form-control {
+    font-size: 11px;
+  }
+
+  .custom-table .multiselect {
+    border-left: none;
+    padding-left: 0px;
+    margin-left: 0px;
+    width: 50%;
+    margin-top: 15px;
+    float: left;
+  }
+
+  .custom-table .multiselect .form-control.select-label {
+    font-size: 11px;
+    padding: 0.575rem 0.75rem;
+    height: 34px;
+  }
+
+  .custom-table .multiselect .options {
+    left: 0;
+  }
+
+  .custom-table .filter-search-control {
+    float: right;
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (max-width: 767px) and (min-width: 320px) {
+  .custom-table .showing {
+    float: left;
+    width: 100%;
+    font-size: 11px;
+  }
+
+  .custom-table .showby {
+    border-left: none;
+    padding-left: 0px;
+    margin-left: 0px;
+    width: 100%;
+    float: left;
+    text-align: left;
+    font-size: 11px;
+  }
+
+  .custom-table .showby label {
+    font-size: 11px;
+  }
+
+  .custom-table .showby span {
+    font-size: 11px;
+  }
+
+  .custom-table .showby .form-control {
+    font-size: 11px;
+  }
+
+  .custom-table .multiselect {
+    border-left: none;
+    padding-left: 0px;
+    margin-left: 0px;
+    width: 100%;
+    margin-top: 15px;
+    float: left;
+  }
+
+  .custom-table .multiselect .form-control.select-label {
+    font-size: 11px;
+    padding: 0.575rem 0.75rem;
+    height: 34px;
+  }
+
+  .custom-table .multiselect .options {
+    left: 0;
+  }
+
+  .custom-table .filter-search-control {
+    float: left;
+    margin-top: 15px;
+  }
+}
