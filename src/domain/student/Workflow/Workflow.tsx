@@ -38,7 +38,7 @@ export class Workflow extends React.Component<any, any> {
         let data = this.formRef.current.getDataFromForm();
         if (data.isValid) {
             delete data.isValid;
-            this.reFormateData(data);
+            this.callApi(data);
         }
     };
 
@@ -53,10 +53,11 @@ export class Workflow extends React.Component<any, any> {
                 };
             }
         });
-        this.callApi(jsonData);
+        return jsonData;
     }
 
     callApi = (jsonData: any) => {
+        jsonData = this.reFormateData(jsonData);
         const { activeIndex, data } = this.state;
         if (data[activeIndex] && data[activeIndex].apiEndPoint) {
             let requestOptions: any = {
