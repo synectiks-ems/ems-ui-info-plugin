@@ -9,10 +9,10 @@ export class CustomTextArea extends React.Component<any, any> {
         }
     };
     render() {
-        const { containerClass, labelClass, inputClass, label, htmlFor, id, name, placeholder, value, isValid, message, notice } = this.props;
+        const { containerClass, labelClass, inputClass, isRequired, label, htmlFor, id, name, placeholder, value, isValid, message, notice } = this.props;
         return (
             <div className={containerClass}>
-                <label className={labelClass} htmlFor={htmlFor}>{label}</label>
+                <label className={labelClass} htmlFor={htmlFor}>{label}{isRequired == true && <span className="required"> * </span>}</label>
                 <textarea className={`${inputClass} ${isValid ? '' : 'is-invalid error'}`} id={id} name={name} value={value} placeholder={placeholder} onChange={this.onChange} />
                 {
                     !isValid &&

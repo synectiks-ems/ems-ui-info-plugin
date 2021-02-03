@@ -9,10 +9,10 @@ export class CustomTextbox extends React.Component<any, any> {
         }
     };
     render() {
-        const { containerClass, labelClass, inputClass, label, htmlFor, id, name, placeHolder, value, isValid, message, type, notice } = this.props;
+        const { containerClass, labelClass, inputClass, label, htmlFor, isRequired, id, name, placeHolder, value, isValid, message, type, notice } = this.props;
         return (
             <div className={containerClass}>
-                <label className={labelClass} htmlFor={htmlFor}>{label}</label>
+                <label className={labelClass} htmlFor={htmlFor}>{label}{isRequired == true && <span className="required"> * </span>}</label>
                 <input type={type} className={`${inputClass} ${isValid ? '' : 'is-invalid error'}`} id={id} name={name} value={value} placeholder={placeHolder} onChange={this.onChange} />
                 {
                     !isValid &&

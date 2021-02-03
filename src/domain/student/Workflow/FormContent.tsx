@@ -162,23 +162,23 @@ class FormContent extends React.Component<any, any> {
         let frmData = [];
         if (formData.type === componentType.TEXT || formData.type === componentType.NUMBER || formData.type === componentType.DATE) {
             frmData.push(
-                <CustomTextbox key={formData.id} containerClass="form-group" type={formData.type} inputClass="form-control" htmlFor={formData.name} id={formData.name} placeHolder={formData.placeHolder} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} />
+                <CustomTextbox key={formData.id} containerClass="form-group" type={formData.type} inputClass="form-control" htmlFor={formData.name} id={formData.name} placeHolder={formData.placeHolder} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} isRequired={formData.isRequired} />
             );
         } else if (formData.type === componentType.TEXT_AREA) {
             frmData.push(
-                <CustomTextArea key={formData.id} containerClass="form-group" rows={5} inputClass="form-control textarea" htmlFor={formData.name} id={formData.name} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} />
+                <CustomTextArea key={formData.id} containerClass="form-group" rows={5} inputClass="form-control textarea" htmlFor={formData.name} id={formData.name} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} isRequired={formData.isRequired} />
             );
         } else if (formData.type === componentType.SELECTBOX) {
             frmData.push(
-                <CustomSelectbox key={formData.id} containerClass="form-group" inputClass="form-control" htmlFor={formData.id} id={formData.id} name={formData.name} value={formData.value} options={formData.options} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} label={formData.title} notice={formData.notice} />
+                <CustomSelectbox key={formData.id} containerClass="form-group" inputClass="form-control" htmlFor={formData.id} id={formData.id} name={formData.name} value={formData.value} options={formData.options} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} label={formData.title} notice={formData.notice} isRequired={formData.isRequired} />
             );
         } else if (formData.type === componentType.RADIO || formData.type === componentType.CHECK_BOX) {
             frmData.push(
-                <CustomRadioCheckbox key={formData.id} containerClass="form-group" inputClass="form-control d-inline-block w-auto p-0" type={formData.type} htmlFor={formData.id} id={formData.id} name={formData.name} value={formData.value} options={formData.options} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} label={formData.title} notice={formData.notice} />
+                <CustomRadioCheckbox key={formData.id} containerClass="form-group" inputClass="form-control d-inline-block w-auto p-0" type={formData.type} htmlFor={formData.id} id={formData.id} name={formData.name} value={formData.value} options={formData.options} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} label={formData.title} notice={formData.notice} isRequired={formData.isRequired} />
             );
         } else if (formData.type === componentType.FILE) {
             frmData.push(
-                <CustomFile key={formData.id} containerClass="form-group" type={formData.type} inputClass="form-control" htmlFor={formData.name} id={formData.name} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} />
+                <CustomFile key={formData.id} containerClass="form-group" type={formData.type} inputClass="form-control" htmlFor={formData.name} id={formData.name} name={formData.name} value={formData.value} onChange={(e: any) => this.handleStateChange(e, index, formData.type)} isValid={error.isValid} message={error.message} notice={formData.notice} label={formData.title} isRequired={formData.isRequired} />
             );
         }
         return frmData;
@@ -187,7 +187,7 @@ class FormContent extends React.Component<any, any> {
     render() {
         const { subHeading, title } = this.state;
         return (
-            <div className="tab-content">
+            <div className="workflow-tab-pane">
                 <h2>{title}</h2>
                 <p>{subHeading}</p>
                 {this.displayFormData()}

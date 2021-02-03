@@ -9,7 +9,7 @@ export class Workflow extends React.Component<any, any> {
         this.state = {
             data: this.props.formData,
             activeIndex: 0,
-            loading: false
+            loading: false,
         }
         this.formRef = React.createRef();
     };
@@ -38,9 +38,23 @@ export class Workflow extends React.Component<any, any> {
         let data = this.formRef.current.getDataFromForm();
         if (data.isValid) {
             delete data.isValid;
-            this.callApi(data);
+            this.reFormateData(data);
         }
     };
+
+    reFormateData = (data: any) => {
+        let jsonData = {};
+        Object.keys(data.formData).forEach((index) => {
+            let row = data.formData[index];
+            if (row.value) {
+                jsonData = {
+                    ...jsonData,
+                    [row['name']]: row.value
+                };
+            }
+        });
+        this.callApi(jsonData);
+    }
 
     callApi = (jsonData: any) => {
         const { activeIndex, data } = this.state;
@@ -80,9 +94,27 @@ export class Workflow extends React.Component<any, any> {
                     }
                 }
             );
+        } else if (this.props.onChangeTab) {
+            this.setState({
+                loading: true,
+            });
+            this.props.onChangeTab(activeIndex, jsonData);
         } else {
             this.navigateTab(activeIndex + 1);
         }
+    };
+
+    showNextTab = () => {
+        this.setState({
+            loading: false,
+        });
+        this.navigateTab(this.state.activeIndex + 1);
+    };
+
+    onSuccessfulCall = () => {
+        this.setState({
+            loading: false
+        });
     };
 
     displayTabs = () => {
@@ -99,7 +131,7 @@ export class Workflow extends React.Component<any, any> {
 
     onChangeComponent = (e: any, componentIndex: any, type: any) => {
         const { activeIndex } = this.state;
-        if(this.props.onChangeComponent){
+        if (this.props.onChangeComponent) {
             this.props.onChangeComponent(e, type, activeIndex, componentIndex);
         }
     };
@@ -125,11 +157,11 @@ export class Workflow extends React.Component<any, any> {
         const { data, activeIndex, loading } = this.state;
         return (
             <div className="container">
-                <div className="d-block tabs-container">
+                <div className="d-block workflow-tabs-container">
                     <ul>
                         {this.displayTabs()}
                     </ul>
-                    <div className="tab-content">
+                    <div className="workflow-tab-content">
                         {this.displaytabContent()}
                         <div className="d-block pre-next-buttons">
                             <button className={`blue-button ${activeIndex === 0 ? 'disable' : ''}`} onClick={(e) => this.navigateTab(activeIndex - 1)}>Previous</button>
@@ -137,7 +169,7 @@ export class Workflow extends React.Component<any, any> {
                                 <button className={`blue-button float-right m-r-0 ${(activeIndex === data.length - 1 || loading) ? 'disable' : ''}`} onClick={this.onClickNext} disabled={loading}>Next</button>
                             }
                             {activeIndex === data.length - 1 &&
-                                <button className={`blue-button float-right m-r-0 ${(loading) ? 'disable' : ''}`} onClick={this.onClickNext}  disabled={loading}>Finish</button>
+                                <button className={`blue-button float-right m-r-0 ${(loading) ? 'disable' : ''}`} onClick={this.onClickNext} disabled={loading}>Finish</button>
                             }
 
                         </div>

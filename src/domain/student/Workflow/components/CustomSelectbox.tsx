@@ -20,11 +20,12 @@ export class CustomSelectbox extends React.Component<any, any> {
         return retData;
     }
     render() {
-        const { containerClass, labelClass, inputClass, label, htmlFor, id, name, value, isValid, message, options, notice } = this.props;
+        const { containerClass, labelClass, inputClass, isRequired, label, htmlFor, id, name, value, isValid, message, options, notice } = this.props;
         return (
             <div className={containerClass}>
-                <label className={labelClass} htmlFor={htmlFor}>{label}</label>
+                <label className={labelClass} htmlFor={htmlFor}>{label}{isRequired == true && <span className="required"> * </span>}</label>
                 <select className={`${inputClass} ${isValid ? '' : 'is-invalid error'}`} id={id} name={name} value={value} onChange={this.onChange} >
+                    <option value="">Select</option>
                     {this.displayOptions(options)}
                 </select>
                 {
