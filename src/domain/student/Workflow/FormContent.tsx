@@ -147,11 +147,16 @@ class FormContent extends React.Component<any, any> {
         return retData;
     }
 
-    getDataFromForm = () => {
-        this.setState({
-            isSubmitted: true
-        });
-        let errorData = this.validate(true);
+    getDataFromForm = (validate: any) => {
+        let errorData = {
+            isValid: true
+        };
+        if (validate) {
+            errorData = this.validate(true);
+            this.setState({
+                isSubmitted: true
+            });
+        }
         return {
             isValid: errorData.isValid,
             formData: this.state.formData

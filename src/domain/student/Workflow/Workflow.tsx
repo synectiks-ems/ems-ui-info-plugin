@@ -3,7 +3,7 @@ import FormContent from './FormContent';
 import './css/workflow.css';
 
 export class Workflow extends React.Component<any, any> {
-    formRef: any = null;
+    formRefs: any = [];
     constructor(props: any) {
         super(props);
         this.state = {
@@ -11,7 +11,15 @@ export class Workflow extends React.Component<any, any> {
             activeIndex: 0,
             loading: false,
         }
-        this.formRef = React.createRef();
+        this.createRefs(this.props.formData);
+    };
+
+    createRefs = (data: any) => {
+        if (data && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                this.formRefs.push(React.createRef());
+            }
+        }
     };
 
     componentDidUpdate(prevProps: any, prevState: any) {
@@ -20,6 +28,7 @@ export class Workflow extends React.Component<any, any> {
                 data: this.props.formData,
                 activeIndex: 0,
             });
+            this.createRefs(this.props.formData);
         }
     }
 
@@ -35,23 +44,28 @@ export class Workflow extends React.Component<any, any> {
 
     onClickNext = () => {
         const { activeIndex } = this.state;
-        let data = this.formRef.current.getDataFromForm();
+        let data = this.formRefs[activeIndex].current.getDataFromForm(true);
         if (data.isValid) {
             delete data.isValid;
-            this.reFormateData(data);
+            let wholeData: any = [];
+            for (let i = 0; i < this.formRefs.length; i++) {
+                let newData = this.formRefs[i].current.getDataFromForm(false);
+                wholeData = wholeData.concat(newData.formData);
+            }
+            this.reFormateData(wholeData);
         }
     };
 
     reFormateData = (data: any) => {
         let jsonData = {};
-        Object.keys(data.formData).forEach((index) => {
-            let row = data.formData[index];
-            if (row.value) {
-                jsonData = {
-                    ...jsonData,
-                    [row['name']]: row.value
-                };
-            }
+        Object.keys(data).forEach((index) => {
+            let row = data[index];
+            // if (row.value) {
+            jsonData = {
+                ...jsonData,
+                [row['name']]: row.value
+            };
+            // }
         });
         this.callApi(jsonData);
     }
@@ -140,9 +154,11 @@ export class Workflow extends React.Component<any, any> {
         const { data, activeIndex } = this.state;
         let tabData = [];
         for (let i = 0; i < data.length; i++) {
-            if (data[i].content !== undefined && i === activeIndex) {
+            if (data[i].content !== undefined) {
                 tabData.push(
-                    <FormContent key={`formcontent-${i}`} content={data[i]} ref={this.formRef} onChangeComponent={this.onChangeComponent} />
+                    <div style={{ display: activeIndex === i ? 'block' : 'none' }}>
+                        <FormContent key={`formcontent-${i}`} content={data[i]} ref={this.formRefs[i]} onChangeComponent={this.onChangeComponent} />
+                    </div>
                 );
             } else {
                 tabData.push(
