@@ -52,7 +52,8 @@ export class Workflow extends React.Component<any, any> {
                 let newData = this.formRefs[i].current.getDataFromForm(false);
                 wholeData = wholeData.concat(newData.formData);
             }
-            this.reFormateData(wholeData);
+            // this.reFormateData(wholeData);
+            this.callApi(wholeData);
         }
     };
 
@@ -67,10 +68,11 @@ export class Workflow extends React.Component<any, any> {
             };
             // }
         });
-        this.callApi(jsonData);
+        return jsonData;
     }
 
     callApi = (jsonData: any) => {
+        jsonData = this.reFormateData(jsonData);
         const { activeIndex, data } = this.state;
         if (data[activeIndex] && data[activeIndex].apiEndPoint) {
             let requestOptions: any = {
