@@ -296,6 +296,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
           // resp.data.addStudent.cmsStudentVo.exitCode
         );
         this.studentWorkflowRef.current.onSuccessfulCall();
+        
         // exitCode = resp.data.addStudent.cmsStudentVo.exitCode;
 
         // this.setState({
@@ -1287,7 +1288,7 @@ class AddStudentPage extends React.Component<StudentProps, any> {
           {/* <React.StrictMode>
             <StudentWorkFlow />
           </React.StrictMode> */}
-          <div>
+          {/* <div>
             <button
               type="button"
               name="btnSaveStudent"
@@ -1298,13 +1299,13 @@ class AddStudentPage extends React.Component<StudentProps, any> {
               {' '}
                         Save{' '}
             </button>
-          </div>
-          <React.StrictMode>
-            <StudentWorkFlow ref={this.studentWorkflowRef} sendData={this.onClickFinish} />
-          </React.StrictMode>
+          </div> */}
+         
         </div>
 
-
+        <React.StrictMode>
+            <StudentWorkFlow ref={this.studentWorkflowRef} sendData={this.onClickFinish}  />
+          </React.StrictMode>
       </section>
     )
   }
